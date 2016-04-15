@@ -1,0 +1,12 @@
+{
+  "name": "socket-against-humanity",
+  "version": "1.0.0",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "socket.io": "^1.4.4"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
