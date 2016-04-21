@@ -11,7 +11,7 @@ var sockets = {};
 app.use(bodyParser.json());
 
 app.use(function(req, res, next) { // Allow CORS
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000, https://socket-against-humanity.herokuapp.com/');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4000, https://socket-against-humanity.herokuapp.com/');
 
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -33,6 +33,8 @@ function join(slug) {
     if (sockets[sessionName] == null) {
         sockets[sessionName] = io.of('/sessions/' + slug);
     }
+
+    return sessionName;
 }
 
 app.get('/', function(req, res){
@@ -40,13 +42,13 @@ app.get('/', function(req, res){
 });
 
 app.post('/sessions', function(req, res) {
-    join();
-    res.sendStatus(204);
+    var slug = join();
+    res.status(201).send({ session: { slug: slug }});
 });
 
 app.put('/sessions/:slug', function(req, res) {
     join(req.params.slug);
-    res.sendStatus(200);
+    res.sendStatus(204);
 });
 
 http.listen(process.env.PORT || 4000, function() {
