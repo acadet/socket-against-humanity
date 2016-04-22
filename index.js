@@ -23,14 +23,6 @@ app.use(function(req, res, next) { // Allow CORS
     next();
 });
 
-io.on('connection', function(socket) {
-    console.log('a user connected');
-    socket.on('Message', function(data) {
-        console.log("Message received with the following data: " + data);
-        socket.broadcast.emit('Message', data);
-    });
-});
-
 function join(slug) {
     var sessionName = slug;
 
@@ -39,7 +31,17 @@ function join(slug) {
     }
 
     if (sockets[sessionName] == null) {
-        sockets[sessionName] = io.of('/sessions/' + slug);
+        var server = io.of('/sessions/' + slug);
+
+        sockets[sessionName] = server;
+
+        server.on('connection', function(socket) {
+            console.log('a user connected');
+            socket.on('Message', function(data) {
+                console.log("Message received with the following data: " + data);
+                socket.broadcast.emit('Message', data);
+            });
+        });
     }
 
     return sessionName;
