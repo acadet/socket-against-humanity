@@ -25,8 +25,9 @@ app.use(function(req, res, next) { // Allow CORS
 
 io.on('connection', function(socket) {
     console.log('a user connected');
-    socket.on('message', function(data) {
-        console.log(data);
+    socket.on('Message', function(data) {
+        console.log("Message received with the following data: " + data);
+        socket.broadcast.emit('Message', data);
     });
 });
 
