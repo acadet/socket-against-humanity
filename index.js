@@ -23,6 +23,13 @@ app.use(function(req, res, next) { // Allow CORS
     next();
 });
 
+io.on('connection', function(socket) {
+    console.log('a user connected');
+    socket.on('message', function(data) {
+        console.log(data);
+    });
+});
+
 function join(slug) {
     var sessionName = slug;
 
