@@ -36,9 +36,7 @@ function join(slug) {
         sockets[sessionName] = server;
 
         server.on('connection', function(socket) {
-            console.log('a user connected');
             socket.on('Message', function(data) {
-                console.log("Message received with the following data: " + data);
                 socket.broadcast.emit('Message', data);
             });
         });
